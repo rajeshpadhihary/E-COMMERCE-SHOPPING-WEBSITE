@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add Page{% endblock %}
+{% block main-content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 offset-sm-1">
+                <center><h3>Add Review</h3></center>
+                <form action="" method="post" novalidate class="shadow p-5">
+                    <div class="d-flex justify-content-end ">
+                        <small>Product ID : {{product_obj.id}}&nbsp;&nbsp;Product Name : {{product_obj.title}}</small>
+                    </div>
+                    {% csrf_token %}
+                    {% for fm in form %}
+                        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                        <br>
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary"><br>
+                    <br>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success">{{message}}</div>
+                            {% endif %}
+                            {% if message.tags == 'error' %}
+                                <div class="alert alert-danger">{{message}}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main-content %}

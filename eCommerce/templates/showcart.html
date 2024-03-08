@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cart Page{% endblock %}
+
+{% block main-content %}
+
+<section class="h-100">
+    <div class="container">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bolder mb-0 text-black">Hey {{user|capfirst}}, Your Cart is Here. <button class="btn btn-block btn-success mx-3" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                        width="24" height="24" fill="currentColor" class="bi bi-cart fw-bolder" viewBox="0 0 16 16">
+                        <path
+                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                    </svg></button></h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="h5">Shopping Bag</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cartItems == None or cartItems|length == 0 %}
+                            <tr>
+                                <td colspan="4">
+                                    <p class="text-muted text-center mt-3">Your shopping bag is empty.</p>
+                                </td>
+                            </tr>
+                            {% endif %}
+                            {% for items in cartItems %}
+                            <tr>
+                                <td class="align-middle">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{items.product.product_image.url}}" class="img-fluid rounded-3"
+                                            style="width: 120px;" alt="Book">
+                                        <div class="flex-column ms-4">
+                                            <p class="mb-2">{{items.product.title}}</p>
+                                            <p class="mb-2">{{items.product.category}}</p>
+                                            <p class="mb-0">{{items.product.description}}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <div class="d-flex flex-row">
+                                        <input id="form1" min="1" name="quantity" value="{{items.quantity}}" type="text"
+                                            class="form-control form-control-sm" style="width: 70px; color: black;" />
+                                    </div>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0" style="font-weight: 500;">{{items.total}}</p>
+                                </td>
+                                <td class="align-middle">
+                                    <p class="mb-0" style="font-weight: 500;"><a
+                                            href="{% url 'removecartitem' items.id %}"
+                                            class="text-decoration-none text-danger">Remove</a></p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card shadow-2-strong mb-5 mb-lg-0" style="border-radius: 16px;">
+                    <div class="card-body p-4">
+                        <form action="{% url 'orderdetails' %}" method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 mb-4 mb-md-0">
+                                    <div class="d-flex flex-row pb-3">
+                                        <div class="d-flex align-items-center pe-2">
+                                            <input class="form-check-input" type="radio" name="radioNoLabel"
+                                                id="radioNoLabel1v" value="credit_card" aria-label="..." checked />
+                                        </div>
+                                        <div class="rounded border w-100 p-3">
+                                            <p class="d-flex align-items-center mb-0">
+                                                <i class="fab fa-cc-mastercard fa-2x text-dark pe-2"></i>Credit
+                                                Card
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row pb-3">
+                                        <div class="d-flex align-items-center pe-2">
+                                            <input class="form-check-input" type="radio" name="radioNoLabel"
+                                                id="radioNoLabel2v" value="debit_card" aria-label="..." />
+                                        </div>
+                                        <div class="rounded border w-100 p-3">
+                                            <p class="d-flex align-items-center mb-0">
+                                                <i class="fab fa-cc-visa fa-2x fa-lg text-dark pe-2"></i>Debit Card
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row">
+                                        <div class="d-flex align-items-center pe-2">
+                                            <input class="form-check-input" type="radio" name="radioNoLabel"
+                                                id="radioNoLabel3v" value="cash_on_delevery" aria-label="..." />
+                                        </div>
+                                        <div class="rounded border w-100 p-3">
+                                            <p class="d-flex align-items-center mb-0">
+                                                <i class="fas fa-rupee-sign fa-2x fa-lg pe-2"></i>Cash On Delivery
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row pe-2 mx-4 mt-3">
+                                        <a href="{% url 'home' %}"
+                                            class="text-decoration-none bg-secondary text-white"><i
+                                                class="fas fa-angle-left me-2"
+                                                style="margin-left: 10px;margin-right: 10px"></i>Back to
+                                            shopping<svg xmlns="http://www.w3.org/2000/svg" style="margin-left: 20px;"
+                                                width="23" height="23" fill="currentColor" class="bi bi-house-fill"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293z" />
+                                                <path
+                                                    d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293z" />
+                                            </svg></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-9 col-md-9">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-lg-8">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-outline mb-4 mb-xl-5">
+                                                        <input type="text" id="typeName"
+                                                            class="form-control form-control-lg" siez="17"
+                                                            placeholder="Rajesh Rajput" name="nameoncard" />
+                                                        <label class="form-label" for="typeName">Name on card</label>
+                                                    </div>
+                                                    <div class="form-outline mb-4 mb-xl-5">
+                                                        <input type="text" id="typeExp"
+                                                            class="form-control form-control-lg" placeholder="MM/YY"
+                                                            size="7" id="exp" minlength="7" maxlength="7"
+                                                            name="expary" />
+                                                        <label class="form-label" for="typeExp">Expiration</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-outline mb-4 mb-xl-5">
+                                                        <input type="text" id="typeText"
+                                                            class="form-control form-control-lg" siez="17"
+                                                            placeholder="1111 2222 3333 4444" minlength="19"
+                                                            maxlength="19" name="cardnumber" />
+                                                        <label class="form-label" for="typeText">Card Number</label>
+                                                    </div>
+
+                                                    <div class="form-outline mb-4 mb-xl-5">
+                                                        <input type="password" id="typeText"
+                                                            class="form-control form-control-lg"
+                                                            placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3"
+                                                            maxlength="3" name="cvv" />
+                                                        <label class="form-label" for="typeText">Cvv</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        {% for i in add_user %}
+                                                        <div class="col d-flex flex-row pb-3">
+                                                            <div class="d-flex align-items-center pe-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="addressNoLabel" id="addressNoLabel"
+                                                                    value="{{i.id}}" aria-label="..." checked />
+                                                            </div>
+                                                            <div class="rounded border w-100 p-3">
+                                                                <p class="d-flex align-items-center mb-0">
+                                                                    <i
+                                                                        class="fa fa-address-card fa-2x text-dark pe-2"></i>Address{{forloop.counter}}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 col-lg-4">
+                                            <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                                <p class="mb-2">Subtotal</p>
+                                                <p class="mb-2">{{total}}</p>
+                                            </div>
+
+                                            <div class="d-flex justify-content-between" style="font-weight: 500;">
+                                                <p class="mb-0">Shipping Charge</p>
+                                                <p class="mb-0">{{shipping_charge}}</p>
+                                            </div>
+
+                                            <hr class="my-4">
+
+                                            <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                                <p class="mb-2"> GST </p>
+                                                <p class="mb-2">{{tax}}</p>
+                                            </div>
+                                            <div class="d-flex justify-content-between mb-4" style="font-weight: 500;">
+                                                <p class="mb-2"> Total (Including GST) </p>
+                                                <p class="mb-2">{{grand_total}}</p>
+                                            </div>
+
+                                            <button type="submit" class="btn btn-primary btn-block btn-lg mt-3 w-100">
+                                                <div class="d-flex justify-content-between">
+                                                    <span><small>Checkout</small></span>
+                                                    <span><small>&#8377; {{grand_total}}</small></span>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="col-md-12 text-center">
+                                    {% if messages %}
+                                    {% for message in messages %}
+                                        {% if message.tags == 'success' %}
+                                            <div class="alert alert-dismissible bg-success-subtle">{{message}}</div>
+                                        {% endif %}
+                                        {% if message.tags == 'error' %}
+                                            <div class="alert alert-dismissible bg-danger-subtle">{{message}}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock main-content %}

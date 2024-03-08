@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Verification Page{% endblock %}
+
+{% block main-content %}
+
+<section style="background-color: lavender;">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="row pb-5">
+            <div class="col-md-12">
+                <div class="main-verification-input-wrap">
+                    <ul>
+                        <li>You have recieved a verification code on your mail. Enter that code below to successfull your Order.</li>
+                        <li>If somehow, you did not recieve the verification email then <a class="anch" href="#">resend the verification email</a></li>
+                    </ul>
+                    <div class="main-verification-input fl-wrap">
+                        <div class="main-verification-input-item"> 
+                            <input class="" type="text" value="" placeholder="Enter the verification code" name="otp"> 
+                        </div> 
+                        <button class="main-verification-button bg-info" type="submit">Verify And Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% endblock main-content %}

@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Orders Page{% endblock %}
+
+{% block main-content %}
+<section class="mb-0 pb-2">
+    <div class="container-fluid">
+        {% if not orders %}
+            <h2 class="fw-bold text-danger text-center">No Orders Available</h2>
+        {% else %}
+            <marquee behavior="alternate" direction="right" onmouseover="this.stop()" onmouseout="this.start()"><h4 class="text-danger">Please Click On Table Row To Add Review. Hope You Do It Fast.</h4></marquee>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order_id</th>
+                        <th>Date</th>
+                        <th>Address</th>
+                        <th>Product and Quantity</th>
+                        <th>Grand Total</th>
+                        <th>Payment Method</th>
+                        <th>Transaction Id</th>
+                        <th>Order Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in orders %}
+                    <tr>
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.order_id}}</td>
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.date}}</td>
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.address.zipcode}}-{{i.address.city}}-{{i.address.state}}</td>
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.quantity|slice:"1:-1"}}</td>
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.total_price}}</td>
+                        {% if i.cash_on_delivery == 1 %}
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>Cas On Delevery</td>
+                        {% elif i.debit_card == 1%}
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>Debit Card</td>
+                        {% elif i.credit_card == 1%}
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>Credit Card</td>
+                        {% endif %}
+                        {% if i.cash_on_delivery == 1 %}
+                            <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>Not Available</td>
+                        {% else %}
+                            <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.transaction_id}}</td>
+                        {% endif %}
+                        <td class='clickable-row' data-href='{% url "addreviewtoorderproduct" i.order_id %}'>{{i.order_status}}</td>
+                        <td>
+                            <a href="" data-id="{{i.order_id}}" data-email="{{i.address.email}}" data-username="{{i.user}}" class="btn btn-outline-danger returnToggle" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@getbootstrap">Return</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product Return Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'productreturnformview' %}" method="post">
+                    {% csrf_token %}
+                  <div class="row gy-4 gy-xl-5 p-4 p-xl-5">
+                    <div class="col-12 modal-body">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                          <input type="email" class="form-control" id="email" name="email" value="" readonly>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 modal-body">
+                        <label for="fullname" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" value="" readonly>
+                    </div>
+                    <div class="col-12 col-md-6 modal-body">
+                      <label for="order_id" class="form-label">Order ID</label>
+                      <div class="input-group">
+                        <input type="tel" class="form-control" id="order_id" name="order_id" value="" readonly>
+                      </div>
+                    </div>
+                    <div class="col-12 modal-body">
+                      <label for="subject" class="form-label">Subject</label>
+                      <input type="text" class="form-control" id="subject" name="subject" value="For Return" readonly>
+                    </div>
+                    <div class="col-12 modal-body">
+                      <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
+                      <textarea class="form-control" id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="modal-footer">
+                            <div class="row d-flex justify-content-end">
+                                <button type="button" class="btn btn-danger col-md-4 col-lg-4 col-sm-4 text-center" aria-hidden="true" data-bs-dismiss="modal">Close<i class="fa fa-close"></i></button>
+                                <button type="submit" class="btn btn-secondary col-md-7 col-lg-7 col-7 offset-1">Submit Application</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </form>
+            </div>
+            
+            </div>
+        </div>
+        </div>
+</section>
+
+<section class="mt-0 mb-0 pt-0">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Return Apply History</h3>
+        </div>
+        {% if return_obj %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Return Products</th>
+                    <th>Return Message</th>
+                    <th>Return Status</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for return in return_obj %}
+                <tr>
+                    <td>{{return.id}}</td>
+                    <td>{{return.return_product}}</td>
+                    <td>{{return.reason}}</td>
+                    <td>
+                        {% if return.return_status == 1 %}
+                            <span><button class="alert alert-success" style="height: 1%;">Approved</button></span>
+                        {% elif return.return_status == 2%}
+                            <span><button class="alert alert-danger" style="height: 1%;">Rejected</button></span>
+                        {% else %}
+                            <span><button class="alert alert-warning" style="height: 1%;">Pending...</button></span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-success alert-dismissible fade show container-fluid mt-4" role="alert">
+            <center><strong>History Is Empty</strong></center>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+
+
+<script>
+    $(document).ready(function($) {
+        $(".clickable-row").click(function() {
+            window.location = $(this).data("href");
+        });
+    });
+    $(document).on("click", ".returnToggle", function () {
+        var orderId = $(this).data('id');
+        var email = $(this).data('email');
+        var username = $(this).data('username');
+
+        $(".modal-body #order_id").val( orderId );
+        $(".modal-body #username").val( username );
+        $(".modal-body #email").val( email );
+
+    });
+</script>
+
+{% endblock main-content %}

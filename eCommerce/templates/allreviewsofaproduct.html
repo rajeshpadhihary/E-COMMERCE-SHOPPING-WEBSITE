@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Reviews Of this Product Page{% endblock %}
+
+{% block main-content %}
+<section>
+    <div class="col-lg-12">
+        <div class="card card-secondary">
+          <div class="card-header">
+            <h3 class="card-title">Ratings Of This Product</h3>
+          </div>
+          <div class="card-body">
+            <div class="chart">
+              <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                  <th scope="col">Review User Name</th>
+                  <th scope="col">Rating</th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Review Text</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if reviews_to_show|length == 0 %}
+                    <tr>
+                        <td colspan="4" class="text-center bg-danger">No Reviews Yet.</td>
+                    </tr>
+                {% else %}
+                    {% for i in reviews_to_show %}
+                    <tr>
+                        <td>{{i.review_user_name}}</td>
+                        <td>{{i.rating}}</td>
+                        <td>{{i.product.title}}</td>
+                        <td>{{i.review_text}}</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+  <script>
+    $(document).ready(function(){
+        var rating_label_list = {{ rating_label_list|safe }};
+        var rating_count_in_product = {{ rating_count_in_product }};
+
+        var areaChartData = {
+          
+          labels  : rating_label_list,
+          datasets: [
+            {
+              label               : 'Ratings Count',
+              backgroundColor     : 'rgba(0,255,0,0.3)',
+              borderColor         : 'rgba(60,141,188,0.8)',
+              pointRadius          : false,
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : rating_count_in_product
+            },
+          ]
+        }
+
+
+
+        var barChartCanvas = $('#barChart').get(0).getContext('2d')
+        var barChartData = $.extend(true, {}, areaChartData)
+        var temp0 = areaChartData.datasets[0]
+        barChartData.datasets[0] = temp0
+
+        var barChartOptions = {
+          responsive              : true,
+          maintainAspectRatio     : false,
+          datasetFill             : false
+        }
+
+        new Chart(barChartCanvas, {
+          type: 'bar',
+          data: barChartData,
+          options: barChartOptions
+        });
+    })
+  </script>
+{% endblock main-content %}

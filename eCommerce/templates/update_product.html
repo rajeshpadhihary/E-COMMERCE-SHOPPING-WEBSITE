@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Product Update Page{% endblock %}
+{% block main-content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-10 offset-sm-1">
+                <center><h3>Update Product</h3></center>
+                <form action="" method="post" novalidate class="shadow p-5" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for fm in form %}
+                        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                        <br>
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary"><br>
+                    <br>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-dismissible alert-{{message.tags}}">{{message}}</div>
+                            {% endif %}
+                            {% if message.tags == 'warning' %}
+                                <div class="alert alert-dismissible alert-{{message.tags}}">{{message}}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main-content %}

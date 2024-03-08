@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Add Review To Ordered Product{% endblock %}
+
+{% block main-content %}
+<section>
+    <div class="container-fluid">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Order_id</th>
+                    <th>Product Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in single_order_products %}
+                <tr>
+                    <td>{{order_obj_id}}</td>
+                    <td>{{i.title}}</td>
+                    <td>
+                        <a href="{% url 'addreview' i.id %}" class="btn btn-outline-success">Add Review</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock main-content %}

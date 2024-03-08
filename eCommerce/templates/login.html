@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login Page{% endblock %}
+
+{% block main-content %}
+<section>
+    <div class="containrer">
+        <div class="row my-3">
+            <div class="col-sm-4 offset-sm-4">
+                <h3>Customer Login</h3>
+                <hr>
+                <form action="" method="post" novalidate class="shadow p-5">
+                    {% csrf_token %}
+                    {% for fm in form %}
+                        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                        <br>
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary"><br>
+
+                    <div class="text-center text-primary fw-bold">
+                        <small>New User ? <a href="{% url 'registration' %}" class="text-danger">Create an Account.</a></small>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main-content %}

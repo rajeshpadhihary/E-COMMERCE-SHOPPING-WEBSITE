@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}WishList Page{% endblock %}
+
+{% block main-content %}
+<section class="h-100" style="background-color: #eee;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-10">
+  
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bolder mb-0 text-black">Hey {{user|capfirst}}, Your Wish List is Here.<button class="btn btn-block btn-danger mx-3" disabled><svg class="feather feather-heart fw-bolder" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+              </path>
+              </svg></button></h3>
+          </div>
+
+          {% if wishlist_obj|length == 0 %}
+            <div class="alert alert-danger" role="alert">
+                <h3>Not a single Product in Wish list.</h3>
+            </div>
+          {% else %}
+            {% for i in wishlist_obj %}
+                <div class="card rounded-3 mb-4">
+                    <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img
+                            src="{{i.product.product_image.url}}"
+                            class="img-fluid rounded-3" alt="Cotton T-shirt">
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-4">
+                        <p class="lead fw-normal mb-2">{{i.product.description}}</p>
+                        </div>
+                        <div class="col-md-3 col-lg-3 col-xl-2">
+                            <h5 class="mb-0">{{i.product.discounted_price}}</h5>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4 d-flex">
+                        <a href="{% url 'addtocart' i.product.id %}" class="btn btn-outline-success"><svg xmlns="http://www.w3.org/2000/svg"
+                            width="24" height="24" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                            <path
+                                d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+                        </svg> Add to Cart</a>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+          {% endif %}
+  
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock main-content %}

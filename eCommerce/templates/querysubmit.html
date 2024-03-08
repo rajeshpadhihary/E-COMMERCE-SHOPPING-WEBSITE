@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Query Submited Page{% endblock %}
+{% block main-content %}
+<section class="bg-white">
+    <div class="container my-5 d-flex justify-content-center align-items-center">
+        <img src="{% static 'images/submited.gif' %}" alt="" width="300px" style="background-color: aqua;"/>
+    </div>
+    <div class="container my-5 d-flex justify-content-center align-items-center">
+        <h4 class="fw-bold">Hey {{user.username}}, Your Query Submited Successfully. <a href="{% url 'home' %}" class="text-danger text-decoration-none">Go To Home.</a> </h4>
+    </div>
+</section>
+{% endblock main-content %}

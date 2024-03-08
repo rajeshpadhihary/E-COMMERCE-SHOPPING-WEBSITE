@@ -1,0 +1,57 @@
+.container{
+	width: 900px;
+}
+
+.product_card{
+	background-color: #fff;
+	border:none;
+	border-radius: 10px;
+	width: 150px;
+	height: 200px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.image-container{
+	width: 150px;
+	position: relative;
+}
+
+
+.wishlist{
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+.dress-name{
+	font-size: 13px;
+	font-weight: bold;
+	width: 75%;
+}
+
+
+.new-price{
+	font-size: 13px;
+	font-weight: bold;
+	color: red;
+	
+}
+.old-price{
+	font-size: 8px;
+	font-weight: bold;
+	color: grey;
+}
+
+.buy{
+	font-size: 12px;
+	color: purple;
+	font-weight: 500;
+}

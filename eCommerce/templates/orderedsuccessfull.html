@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Order Placed Page{% endblock %}
+{% block main-content %}
+<section class="bg-white">
+    <div class="container my-5 d-flex justify-content-center align-items-center">
+        <img src="{% static 'images/success.gif' %}" alt="" width="300px"/>
+    </div>
+    <div class="container my-5 d-flex justify-content-center align-items-center">
+        <h4 class="fw-bold">Order Placed Successfully. <a href="{% url 'orderrecipt' %}" class="text-danger text-decoration-none">Check Details Here</a> </h4>
+    </div>
+</section>
+{% endblock main-content %}

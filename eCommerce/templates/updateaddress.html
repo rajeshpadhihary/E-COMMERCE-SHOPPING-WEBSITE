@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile Page{% endblock %}
+{% block main-content %}
+<section>
+    <div class="container">
+        <div class="row">
+            <center><h3>Update Address Form</h3></center>
+    
+            <div class="col-sm-3 border-end">
+                <ul class="list-unstyled">
+                    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-outline-primary">Profile</a></li>
+                    <br>
+                    <li class="d-grid"><a href="{% url 'address' %}" class="btn btn-outline-success">Address</a></li>
+                </ul>
+            </div>
+    
+            <div class="col-sm-8 offset-sm-1">
+                <form action="" method="post" novalidate class="shadow p-5">
+                    {% csrf_token %}
+                    {% for fm in form %}
+                        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}}</small>
+                        <br>
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary"><br>
+                    <br>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-dismissible alert-{{message.tags}}">{{message}}</div>
+                            {% endif %}
+                            {% if message.tags == 'warning' %}
+                                <div class="alert alert-dismissible alert-{{message.tags}}">{{message}}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main-content %}

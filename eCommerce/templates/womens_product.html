@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Products For Women{% endblock title %}
+{% block main-content %}
+<section>
+    <h1 class="text-center mb-5 border-bottom border-3"><marquee behavior="alternate" direction="right">Products For Women ({{products_for_women_count}})</marquee></h1>
+    <div class="container">
+        <div class="row mb-3 border border-3 rounded" style="background-color: beige;">
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'T-Shirts' %}" class="btn btn-outline-success">T-Shirts</a></div>
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'Shirts' %}" class="btn btn-outline-success">Shirts</a></div>
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'Jeans' %}" class="btn btn-outline-success">Jeans</a></div>
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'FootWear' %}" class="btn btn-outline-success">FootWear</a></div>
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'Watches' %}" class="btn btn-outline-success">Watches</a></div>
+            <div class="col-md col-sm col-lg col my-2"><a href="{% url 'womensproductfilter' 'Sun Glassess' %}" class="btn btn-outline-success"><small style="font-size: 12px;">Sun-Glassess</small></a></div>
+        </div>
+        <div class="row">
+            {% for i in products_for_women %}
+                <div class="col-md col-sm col-lg col mb-3">
+                    <div class="product_card">
+                        <a href="{% url 'product-details' i.id %}">
+                            <div class="image-container">
+                                <img src="{{i.product_image.url}}" class="img-fluid rounded" style="height: 100px; width: 150px;">
+                            </div>
+                        </a>
+                        <div class="product-detail-container p-2">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <h5 class="dress-name">{{i.title}}</h5>
+
+                                <div class="d-flex flex-column mb-2">
+                                    <span class="new-price">{{i.discounted_price}}</span>
+                                    <small class="old-price text-right">&#8377 {{i.selling_price}}</small>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center pt-1">
+                                <span class="fw-bold" style="font-size: small;"><a href="{% url 'addtocart' i.id %}">Add To Cart</a></span>
+                                <span class="buy fw-bold"><a href="{% url 'buynow' i.id %}">Buy</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock main-content %}

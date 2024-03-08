@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home Page{% endblock %}
+
+{% block main-content %}
+<section class="h-100 gradient-custom-2">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-9 col-xl-7">
+          <div class="card">
+            <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+              <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px; height: 150px;">
+                <img src="{% static 'images\noimage.jpg' %}"
+                  alt="Generic placeholder image" class="img-fluid img-thumbnail mt-4 mb-2"
+                  style="width: 150px; height: 150px; z-index: 1">
+                <a href="{% url 'profile_data' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark" style="z-index: 1;">
+                  Add profile
+                </a>
+              </div>
+              <div class="ms-3" style="margin-top: 130px;">
+                <h5 class="text-white">Not Given Yet.</h5>
+                <p class="text-white border-top">username : {{ user }}</p>
+              </div>
+            </div>
+            <div class="p-4 text-black" style="background-color:azure">
+              <div class="d-flex justify-content-end text-center py-1">
+                <div>
+                  <p class="mb-1 h5">{{address_count}}</p>
+                  <p class="small text-muted mb-0">Address</p>
+                </div>
+                <div class="px-3">
+                  <p class="mb-1 h5">{{orders_count}}</p>
+                  <p class="small text-muted mb-0">Orders</p>
+                </div>
+                <div class="px-3">
+                    <a href="{% url 'add_address' %}" class="btn btn-outline-dark" data-mdb-ripple-color="dark"
+                    style="z-index: 1;">
+                    Add Adress
+                    </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-body p-4 text-black" style="background-color: beige;">
+              <div class="mb-5">
+                <p class="lead fw-normal mb-1">Not Available</p>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <p class="lead fw-normal mb-0">Recent Orders</p>
+                <p class="mb-0"><a href="{% url 'orderview' %}" class="text-muted">Show all</a></p>
+              </div>
+              {% for i in recent_orders %}
+                <div class="card rounded-3 mb-4">
+                    <div class="card-body p-4">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-md-7 col-lg-7 col-xl-7">
+                            <p class="lead fw-normal mb-2">{{i.quantity|slice:"1:-1"}}</p>
+                        </div>
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <h6 class="mb-0">&#8377; {{i.total_price}}</h6>
+                        </div>
+                        {% if i.order_status == 1 %}
+                            <div class="col-md-1 col-lg-1 col-xl-1">
+                                <i class="fas fa-thumbs-up"></i>
+                            </div>
+                        {% else %}
+                            <div class="col-md-1 col-lg-1 col-xl-1">
+                                <i class="fas fa-thumbs-down"></i>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                    </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock main-content %}
+
+

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Address Page{% endblock %}
+{% block main-content %}
+<section class="h-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 border-end">
+                <ul class="list-unstyled">
+                    <li class="d-grid"><a href="{% url 'profile' %}" class="btn btn-outline-primary">Profile</a></li>
+                    <br>
+                    <li class="d-grid"><a href="{% url 'address' %}" class="btn btn-outline-success">Address</a></li>
+                </ul>
+            </div>
+    
+            <div class="col-sm-9">
+                <div class="container">
+                    <div class="row">
+                        {% for i in user_obj %}
+                            <div class="card mx-2 mb-2 text-black" style="width: 23rem; background-color: #9FE2BF;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{request.user|capfirst}} Your Address</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted text-white">Address{{forloop.counter}}</h6>
+                                    <p class="card-text">
+                                        <li>Full Name : {{i.full_name}}</li>
+                                        <li>Email : {{i.email}}</li>
+                                        <li>Phone Number : +91 - {{i.phone}}</li>
+                                        <li>City : {{i.city}}</li>
+                                        <li>ZipCode : {{i.zipcode}}</li>
+                                        <li>State : {{i.state}}</li>
+                                    </p>
+                                    <a href="{% url 'update_address' i.id %}" class="card-link btn btn-primary">Update</a>
+                                    <a href="{% url 'delete_address' i.id %}" class="card-link btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock main-content %}
