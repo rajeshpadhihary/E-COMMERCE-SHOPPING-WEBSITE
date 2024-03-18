@@ -4,6 +4,7 @@
 
 {% block main-content %}
 <section>
+    {% if all_searh_items %}
     <div class="row">
         {% for i in all_searh_items %}
         <div class="col text-center mb-4">
@@ -23,5 +24,9 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <h4 class="text-danger"><marquee behavior="alternate" direction="right">No items found! Please try again with different keywords.</marquee></h4>
+    {% endif %}
+    
 </section>
 {% endblock main-content %}
