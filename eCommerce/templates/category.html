@@ -4,35 +4,40 @@
 {% block main-content %}
 <section>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="list-group">
-                    {% for i in title %}
-                    <a href="{% url 'category-title' i.title %}" class="list-group-item list-group-item-action" aria-current="true">{{i.title}}</a>
-                    {% endfor %}
+        {% if product %}
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="list-group">
+                        {% for i in title %}
+                        <a href="{% url 'category-title' i.title %}" class="list-group-item list-group-item-action" aria-current="true">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-9">
-                <div class="row">
-                    {% for i in product %}
-                        <div class="col text-center mb-4">
-                            <a href="{% url 'product-details' i.id %}" class="btn">
-                                <div>
-                                    <img src="{{ i.product_image.url }}" width="300px" height="300px" alt="">
-                                    <div class="fw-bold">{{ i.title }}</div>
-                                    <div class="fw-bold">
-                                        <small class="fw-light text-decoration-line-through text-danger">&#8377;{{i.selling_price}}</small>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <small class="fw-bold">&#8377;{{i.discounted_price}}</small>
+                <div class="col-sm-9">
+                    <div class="row">
+                        {% for i in product %}
+                            <div class="col text-center mb-4">
+                                <a href="{% url 'product-details' i.id %}" class="btn">
+                                    <div>
+                                        <img src="{{ i.product_image.url }}" width="300px" height="300px" alt="">
+                                        <div class="fw-bold">{{ i.title }}</div>
+                                        <div class="fw-bold">
+                                            <small class="fw-light text-decoration-line-through text-danger">&#8377;{{i.selling_price}}</small>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <small class="fw-bold">&#8377;{{i.discounted_price}}</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                            
-                        </div>
-                    {% endfor %}
+                                </a>
+                                
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-        </div>
+        {% else %}
+            <h1>No products found!</h1>
+        {% endif %}
+        
     </div>
 </section>
 {% endblock main-content %}

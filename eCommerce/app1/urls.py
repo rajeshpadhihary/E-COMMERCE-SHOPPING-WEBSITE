@@ -45,6 +45,14 @@ from .views import (
     add_Review_After_buying,
     ProductReturnFormView
 )
+
+from django.contrib.auth.views import (
+    LogoutView, 
+    PasswordResetView, 
+    PasswordResetDoneView, 
+    PasswordResetConfirmView,
+    PasswordResetCompleteView
+)
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_view
 from .forms import UserLoginForm,PasswordChangeForm
@@ -57,6 +65,10 @@ urlpatterns = [
     path("passwordChange/",auth_view.PasswordChangeView.as_view(template_name = 'changepassword.html',form_class = PasswordChangeForm,success_url = '/passwordchangedone'),name='passwordchange'),
     path("passwordchangedone/",auth_view.PasswordChangeDoneView.as_view(template_name = 'changepassworddone.html'),name='passwordchangedone'),
     path('logout/',auth_view.LogoutView.as_view(next_page='login'),name='logout'),
+    path('password-reset/', PasswordResetView.as_view(template_name='password_reset.html'),name='password-reset'),
+    path('password-reset/done/', PasswordResetDoneView.as_view(template_name='password_reset_done.html'),name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),name='password_reset_confirm'),
+    path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
     # Other Views
     path('profile/',UserProfile.as_view(),name='profile'),
     path('profile_data/',ProfileData.as_view(),name='profile_data'),
